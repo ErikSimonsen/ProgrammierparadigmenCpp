@@ -1,0 +1,7 @@
+2019-02-15__11-32-02-00:
+   speedbird five two charlie climb flight level two two zero
+   BAW52CV INIT_RESPONSE
+   BAW52CV CLIMB 120 FL
+2019-02-15__11-33-55-00:
+   good morning charlie
+   NO_CALLSIGN NO_CONCEPT

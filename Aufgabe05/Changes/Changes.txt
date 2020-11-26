@@ -1,0 +1,1 @@
+In der Main() bei der Ausgabeschleife für die eingelesenen Wörter das <= zu < geändert.

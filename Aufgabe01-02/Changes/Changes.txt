@@ -1,0 +1,10 @@
+1. Schönheitsfehler: Ich hatte (aus irgendeinem Grund) nicht die komplette WordSeqPlusCmds.txt, und daher musste ich meine Tests anpassen, nachdem ich die Datei aktualisiert habe.
+2. Schönheitsfehler: Bei den ursprünglich abgegebenen Screenshots habe ich die Reihenfolge verwechselt, d.h. 4-1-02.jpg war eigentlich der Screenshot für 4-01-01 etc. Dies habe ich geändert.
+3. Programmfehler: Beim Zählen der Command-Occurences hatte ich einen Fehler:
+    Es wurde geprüft ob (falls es ein drittes Wort in der Zeile gibt) es einen zusammengesetzten Command aus Wort 2 und Wort 3 der Zeile in den erlaubten Commands gibt.
+    In dieser Prüfung habe ich auf Wort2 ein .append() mit Wort 3 zur Prüfung ausgeführt.
+    In der nachfolgenden Prüfung ob es Wort 2 auch alleinstehend in der Liste der erlaubten Commands gibt, wurde dann natürlich nicht mehr das "ursprüngliche" Wort2 evaluiert
+    sondern Wort2 mit Wort 3 appended. Hier habe ich nun eine normale String-Konkatenation verwendet.
+4. Schönheitsfehler: Beim Zählen der Command-Occurences hatte ich die Aufgabe so verstanden, dass ein Command entweder als  zusammengesetztes Command ODER alleinstehendes Format vorkommen darf,
+    aber nicht beides. Beispielsweise wenn in expectedTypes.txt sowohl CLEARED ILS als auch CLEARED enthalten waren, habe ich beim einlesen von CLEARED ILS nur dieses Command
+    inkrementiert nicht aber auch das Teilwort (CLEARED). Nachdem ich das Beispiel in der Excel-Datei gesehen habe, habe ich dieses Verhalten angepasst.
