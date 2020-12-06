@@ -1,5 +1,5 @@
-#ifndef AUFGABE6_DATETIME_H
-#define AUFGABE6_DATETIME_H
+#ifndef AUFGABE7_DATETIME_H
+#define AUFGABE7_DATETIME_H
 
 #include <string>
 
@@ -26,4 +26,4 @@ private:
     void SplitName();
 };
 
-#endif //AUFGABE6_DATETIME_H
+#endif //AUFGABE7_DATETIME_H

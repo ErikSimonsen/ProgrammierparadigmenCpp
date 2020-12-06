@@ -20,15 +20,15 @@ void FileName::SplitName()
         this->seconds = std::stoi(this->name.substr(18, 2));
         this->milliseconds = std::stoi(this->name.substr(21, 2));
     }
-    catch (std::invalid_argument &e)
+    catch (std::invalid_argument&)
     {
-        throw std::invalid_argument("File Name has to be the following format: YYYY-MM-DD__hh-mm-ss-ms");
+        throw std::invalid_argument("File Name has to be the following format: YYYY-MM-DD__hh-mm-ss-ms. ");
     }
 }
 
-void FileName::SetName(const std::string &name)
+void FileName::SetName(const std::string &val)
 {
-    this->name = name;
+    this->name = val;
     this->SplitName();
 }
 // Getters

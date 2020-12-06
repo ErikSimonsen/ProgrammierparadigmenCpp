@@ -1,0 +1,6 @@
+In CMake WarningLevel für GCC UND MSVC hinzugefügt (war vorher nur GCC und ich hab vergessen den Code mit MSVC zu kompilieren).
+ Interessant, dass MSVC einen fatalen Fehler ausgibt für die Konstante in DosFarben.h ausgab, während GCC nichtmal ein Warning ausgibt.
+Die Warnings bearbeitet (ungenutzte Variablen und int-returns statt bool, int statt size_t).
+
+Herr Helmkes Feedback berücksichtigt und eine SetCommand(std::string text, int pos) hinzugefügt, und die std::string* GetCommands() in GetCommandsPtr() geändert
+(die Methode wird für Tests genutzt um die Pointer bzgl. tiefe/flache Kopie zu prüfen).

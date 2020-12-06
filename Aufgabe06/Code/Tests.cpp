@@ -34,7 +34,7 @@ bool testFileNameSplit2()
         FileName fileName2;
         fileName2.SetName("2016-07-12__08-33-49-0");
     }
-    catch (const std::invalid_argument &e)
+    catch (const std::invalid_argument &)
     {
         return true;
     }
@@ -85,9 +85,7 @@ bool testAtcoCopyConstructor()
     atcoCommand.AddCommand("RYR81BA CONTACT_FREQUENCY 129.050");
     atcoCommand.AddCommand("NLY785J TRANSITION BALAD_3N");
     AtcoCommand atcoCommand2(atcoCommand);
-    std::string *commands = atcoCommand.GetCommands();
-    commands[0] = "test";
-
+    atcoCommand.SetCommand("test", 0);
     atcoCommand2.GetFileName().SetName("2014-07-12__08-34-08-02");
     atcoCommand2.AddCommand("NLY785J CONTACT TOWER");
     atcoCommand2.AddCommand("CONTACT TOWER");
@@ -109,9 +107,9 @@ bool testAtcoAssignmentOperator()
     AtcoCommand atcoCommand{fileName, "standby"}, atcoCommand2{};
     atcoCommand2.SetFileName(fileName2);
     atcoCommand2.SetWordSequence("active");
-    std::string *oldCommandsPointer = atcoCommand.GetCommands();
+    const std::string *oldCommandsPointer = atcoCommand.GetCommandsPtr();
     atcoCommand = atcoCommand;
-    if (oldCommandsPointer != atcoCommand.GetCommands()) //test self assignment
+    if (oldCommandsPointer != atcoCommand.GetCommandsPtr()) //test self assignment
         return false;
 
     atcoCommand.AddCommand("RYR81BA CONTACT RADAR");
@@ -120,7 +118,7 @@ bool testAtcoAssignmentOperator()
     atcoCommand2.AddCommand("NLY785J TRANSITION BALAD_3N");
 
     atcoCommand2 = atcoCommand;
-    if (atcoCommand2.GetCommands() == atcoCommand.GetCommands()) //pointer und elemente wurde nicht flach, sondern tief kopiert
+    if (atcoCommand2.GetCommandsPtr() == atcoCommand.GetCommandsPtr()) //pointer und elemente wurde nicht flach, sondern tief kopiert
         return false;
     if (atcoCommand.GetFileName().GetName() != atcoCommand2.GetFileName().GetName()) //filename wurde flach kopiert, muss gleich sein
         return false;
@@ -186,7 +184,7 @@ bool testAtcoCmdsCopyConstructor()
     //check if both pointers still point to the same array or to separate ones
     if (atcoCmds2.GetAtcoCommands() == atcoCmds1.GetAtcoCommands())
         return false;
-    if (atcoCmds2.GetCountedUtterances() != 6 || !atcoCmds2.GetCountedUtterances() > atcoCmds1.GetCountedUtterances())
+    if (atcoCmds2.GetCountedUtterances() != 6 || atcoCmds2.GetCountedUtterances() <= atcoCmds1.GetCountedUtterances())
         return false;
 
     return true;
@@ -244,7 +242,7 @@ bool testAtcoCmdsReadFromFile()
     for (int i = 0; i < atcoCmds.GetCountedUtterances(); i++)
     {
         AtcoCommand atcoCommand = atcoCmds.Get(i);
-        if (atcoCommand.GetFileName().GetName().empty() || atcoCommand.GetWordSequence().empty() || atcoCommand.GetCommands() == nullptr)
+        if (atcoCommand.GetFileName().GetName().empty() || atcoCommand.GetWordSequence().empty() || atcoCommand.GetCommandsPtr() == nullptr)
             return false;
     }
 
@@ -275,7 +273,7 @@ bool testFillAllowedCommands()
     if (!inTypes)
     {
         std::cerr << "Die angegebene Datei für erlaubten Commands konnte nicht gefunden werden.";
-        return -1;
+        return false;
     }
     FillAllowedCommands(allowedCmdSet, inTypes);
     const bool is_in11 = allowedCmdSet.find("DESCEND") != allowedCmdSet.end();
@@ -296,7 +294,7 @@ bool testFillAllowedCommands1()
     if (!inTypes)
     {
         std::cerr << "Die angegebene Datei für erlaubten Commands konnte nicht gefunden werden.";
-        return -1;
+        return false;
     }
     FillAllowedCommands(allowedCmdSet, inTypes);
     const bool is_in1 = allowedCmdSet.find("CLEARED ILS") != allowedCmdSet.end();

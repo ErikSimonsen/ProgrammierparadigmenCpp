@@ -1,10 +1,15 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <cmath>
 #include "Tests.h"
 #include "Util.h"
 #include "AtcoCmds.h"
 #include "Processing.h"
+#include "NumberExtractor.h"
+#include "DynArray.h"
+
+const std::string TestFilesPath = "testAssets/";
 bool testTrim()
 {
     std::string a = "  aabb ccdd ";
@@ -34,193 +39,87 @@ bool testFileNameSplit2()
         FileName fileName2;
         fileName2.SetName("2016-07-12__08-33-49-0");
     }
-    catch (const std::invalid_argument &e)
+    catch (const std::invalid_argument &)
     {
         return true;
     }
     return false;
 }
-
-bool testAtcoCmdAdd()
+bool testDynArrayAdd()
 {
-    FileName fileName("2016-07-12__08-34-08-02"); //stack object
-    std::string wordSequence = " ryan_air seven seven delta kilo direct to detsa";
-    AtcoCommand *atcoCommand = new AtcoCommand(fileName, wordSequence);
-    atcoCommand->AddCommand("RYR77DK");
-    atcoCommand->AddCommand("DIRECT_TO");
-    atcoCommand->AddCommand("DETSA");
-    if (atcoCommand->GetCmdCnt() != 3)
+    DynArray<std::string> dynArr;
+    DynArray<AtcoCommand> dynArr1;
+    FileName fileName{"2016-07-12__08-33-49-01"};
+    AtcoCommand atcoCommand{fileName, "test word sequence"};
+    dynArr.Add("test");
+
+    dynArr1.Add(atcoCommand);
+
+    if (dynArr.Get(0) != "test" || dynArr1.Get(0).GetWordSequence() != "test word sequence")
         return false;
     return true;
 }
-
-bool testAtcoCmdGet()
+bool testDynArraySet()
 {
-    AtcoCommand *atcoCommand = new AtcoCommand();
-    atcoCommand->AddCommand("RYR77DK");
-    atcoCommand->AddCommand("DIRECT_TO");
+    DynArray<AtcoCommand> dynArr;
+    FileName fileName{"2016-07-12__08-33-49-01"};
+    AtcoCommand atcoCommand{fileName, "test word sequence"};
+    AtcoCommand atcoCommand2{fileName, "test 2"};
 
-    if (atcoCommand->GetCommand(0) != "RYR77DK" || atcoCommand->GetCommand(1) != "DIRECT_TO")
+    dynArr.Add(atcoCommand);
+
+    dynArr.Set(atcoCommand2, 0);
+    if (dynArr.Get(0).GetWordSequence() != "test 2")
         return false;
     return true;
 }
-
-bool testAtcoCmdResize()
+bool testDynArrayResize()
 {
-    AtcoCommand *atcoCommand = new AtcoCommand();
-    for (int i = 0; i < 5; i++)
-        atcoCommand->AddCommand("RYR77DK");
-    if (atcoCommand->GetCmdCnt() != 5)
-        return false;
-    atcoCommand->AddCommand("Test");
-    if (atcoCommand->GetCmdCnt() != 6 || atcoCommand->GetCommand(5) != "Test")
-        return false;
-    return true;
-}
-bool testAtcoCopyConstructor()
-{
-    FileName fileName("2016-07-12__08-34-08-02");
-    AtcoCommand atcoCommand(fileName, "standby");
-    atcoCommand.AddCommand("RYR81BA CONTACT RADAR");
-    atcoCommand.AddCommand("RYR81BA CONTACT_FREQUENCY 129.050");
-    atcoCommand.AddCommand("NLY785J TRANSITION BALAD_3N");
-    AtcoCommand atcoCommand2(atcoCommand);
-    std::string *commands = atcoCommand.GetCommands();
-    commands[0] = "test";
-
-    atcoCommand2.GetFileName().SetName("2014-07-12__08-34-08-02");
-    atcoCommand2.AddCommand("NLY785J CONTACT TOWER");
-    atcoCommand2.AddCommand("CONTACT TOWER");
-    atcoCommand2.AddCommand("AUA917W CLIMB 160 FL");
-    //check if both AtcoCommands have different amounds of commands -> there was a deep copy, no shallow, otherwise both would
-    //point on the same array of commands
-    if (atcoCommand2.GetCmdCnt() != 6 || atcoCommand.GetCmdCnt() != 3)
-        return false;
-    //primitive fields were shallow copied
-    if (atcoCommand.GetCommand(0) != "test" || atcoCommand2.GetFileName().GetYear() != 2016)
-        return false;
-    if (atcoCommand2.GetCommand(0) != "RYR81BA CONTACT RADAR" || atcoCommand2.GetCommand(5) != "AUA917W CLIMB 160 FL")
-        return false;
-    return true;
-}
-bool testAtcoAssignmentOperator()
-{
-    FileName fileName{"2016-07-12__08-34-08-02"}, fileName2{"2010-07-12__08-34-08-02"};
-    AtcoCommand atcoCommand{fileName, "standby"}, atcoCommand2{};
-    atcoCommand2.SetFileName(fileName2);
-    atcoCommand2.SetWordSequence("active");
-    std::string *oldCommandsPointer = atcoCommand.GetCommands();
-    atcoCommand = atcoCommand;
-    if (oldCommandsPointer != atcoCommand.GetCommands()) //test self assignment
-        return false;
-
-    atcoCommand.AddCommand("RYR81BA CONTACT RADAR");
-    atcoCommand.AddCommand("RYR81BA CONTACT_FREQUENCY 129.050");
-    atcoCommand.AddCommand("NLY785J TRANSITION BALAD_3N");
-    atcoCommand2.AddCommand("NLY785J TRANSITION BALAD_3N");
-
-    atcoCommand2 = atcoCommand;
-    if (atcoCommand2.GetCommands() == atcoCommand.GetCommands()) //pointer und elemente wurde nicht flach, sondern tief kopiert
-        return false;
-    if (atcoCommand.GetFileName().GetName() != atcoCommand2.GetFileName().GetName()) //filename wurde flach kopiert, muss gleich sein
-        return false;
-    atcoCommand2.AddCommand("Test");
-    if (atcoCommand.GetCmdCnt() == atcoCommand2.GetCmdCnt() || atcoCommand2.GetCommand(3) != "Test") //element wurde nur in atcoCommand2 eingefügt
-        return false;
-    return true;
-}
-
-bool testAtcoCmdsAdd()
-{
-    AtcoCmds atcoCmds;
-    FileName fileName("2016-07-12__08-34-08-02"); //stack object
+    DynArray<std::string> dynArr{2};
     for (int i = 0; i < 3; i++)
     {
-        AtcoCommand atcoCmd{fileName, "wordSequence" + i};
-        atcoCmds.Add(atcoCmd);
+        std::string val = "string " + std::to_string(i);
+        dynArr.Add(val);
     }
-
-    if (atcoCmds.GetCountedUtterances() != 3)
+    if (dynArr.GetLimit() != 7 || dynArr.GetCntElements() != 3 || dynArr.Get(2) != "string 2")
         return false;
     return true;
 }
-bool testAtcoCmdsGet()
+bool testDynArrayCopyConstructor()
 {
-    AtcoCmds atcoCmds;
-    FileName fileName("2016-07-12__08-34-08-02"); //stack object
-    AtcoCommand cmd{fileName, "test word sequence"};
-    atcoCmds.Add(cmd);
+    DynArray<AtcoCommand> dynArr;
+    FileName fileName("2016-07-12__08-34-08-02");
+    for (int i = 0; i < 2; i++)
+    {
+        dynArr.Add(AtcoCommand{fileName, "command " + std::to_string(i)});
+    }
+    DynArray<AtcoCommand> dynArr2{dynArr};
 
-    if (atcoCmds.Get(0).GetWordSequence() != "test word sequence")
+    if (dynArr.GetArrPtr() == dynArr2.GetArrPtr() || dynArr.GetCntElements() != dynArr2.GetCntElements())
         return false;
     return true;
 }
-bool testAtcoCmdsResize()
+bool testDynArrayAssignmentOperator()
 {
-    AtcoCmds atcoCmds{3};
-    for (int i = 0; i < 4; i++)
+    DynArray<AtcoCommand> dynArr;
+    DynArray<AtcoCommand> dynArr2;
+    FileName fileName("2016-07-12__08-34-08-02");
+    for (int i = 0; i < 2; i++)
     {
-        AtcoCommand atcoCommand;
-        atcoCmds.Add(atcoCommand);
+        AtcoCommand atcoCommand{fileName, "command " + i};
+        atcoCommand.AddCommand("test" + i);
+        atcoCommand.AddCommand("test2" + i);
+        dynArr.Add(atcoCommand);
+        dynArr2.Add(atcoCommand);
     }
-    if (atcoCmds.GetMaxUtterances() != 8 || atcoCmds.GetCountedUtterances() != 4)
-        return false;
-    return true;
-}
-bool testAtcoCmdsCopyConstructor()
-{
-    AtcoCmds atcoCmds1;
-    FileName fileName;
-    for (int i = 0; i < 5; i++)
-    {
-        AtcoCommand atcoCmd{fileName, "command " + i};
-        atcoCmds1.Add(atcoCmd);
-    }
+    dynArr2 = dynArr;
 
-    AtcoCmds atcoCmds2{atcoCmds1};
-    //both objects have to have exact the same primitive values
-    if (atcoCmds2.GetMaxUtterances() != atcoCmds1.GetMaxUtterances() || atcoCmds2.GetCountedUtterances() != atcoCmds1.GetCountedUtterances())
+    if (dynArr.GetArrPtr() == dynArr2.GetArrPtr()) //check if the pointers to the array of AtcoCommand are different
         return false;
-    AtcoCommand atcoCmd{fileName, "test"};
-    atcoCmds2.Add(atcoCmd);
-    //check if both pointers still point to the same array or to separate ones
-    if (atcoCmds2.GetAtcoCommands() == atcoCmds1.GetAtcoCommands())
-        return false;
-    if (atcoCmds2.GetCountedUtterances() != 6 || !atcoCmds2.GetCountedUtterances() > atcoCmds1.GetCountedUtterances())
-        return false;
-
-    return true;
-}
-bool testAtcoCmdsAssignmentOperator()
-{
-    AtcoCmds atcoCmds1, atcoCmds2;
-    AtcoCommand *oldCommandsPointer = atcoCmds1.GetAtcoCommands();
-    atcoCmds1 = atcoCmds1;
-    //test self assignment
-    if (oldCommandsPointer != atcoCmds1.GetAtcoCommands())
-        return false;
-    FileName fileName;
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < dynArr2.GetCntElements(); i++)
     {
-        AtcoCommand atcoCmd{fileName, "command " + i}, atcoCmd2{};
-        atcoCmd2.SetFileName(fileName);
-        atcoCmd2.SetWordSequence("Testcommand " + i);
-        atcoCmds1.Add(atcoCmd);
-        atcoCmds2.Add(atcoCmd2);
-    }
-    atcoCmds2 = atcoCmds1;
-
-    if (atcoCmds2.GetAtcoCommands() == atcoCmds1.GetAtcoCommands()) //pointer und elemente wurde nicht flach, sondern tief kopiert
-        return false;
-    for (int i = 0; i < atcoCmds1.GetCountedUtterances(); i++)
-    {
-        AtcoCommand c1 = atcoCmds1.Get(i);
-        AtcoCommand c2 = atcoCmds2.Get(i);
-        AtcoCommand *ptr_c1 = &c1;
-        AtcoCommand *ptr_c2 = &c2;
-        if (ptr_c1 == ptr_c2) //falls objekt referenzen gleich sind -> keine tiefe Kopie erfolgt
-            return false;
-        if (c1.GetWordSequence() != c2.GetWordSequence()) //primitive datentypen müssen auch bei tiefer kopie übereinstimmen (da diese flach kopiert werden)
+        //check for each AtcoCommand (which holds an DynArray<std::string>) if the pointer to its DynArray<std::string> are different (deep copied)
+        if (dynArr2.Get(i).GetCommandsPtr() == dynArr.Get(i).GetCommandsPtr())
             return false;
     }
     return true;
@@ -229,22 +128,22 @@ bool testAtcoCmdsAssignmentOperator()
 bool testAtcoCmdsReadFromFile()
 {
     AtcoCmds atcoCmds;
-    std::ifstream inFile("WordSeqPlusCmds.txt");
-    std::ifstream inFile2("WordSeqPlusCmds1.txt");
-    std::ifstream inFile3("WordSeqPlusCmds2.txt");
+    std::ifstream inFile(TestFilesPath + "WordSeqPlusCmds.txt");
+    std::ifstream inFile2(TestFilesPath + "WordSeqPlusCmds1.txt");
+    std::ifstream inFile3(TestFilesPath + "WordSeqPlusCmds2.txt");
 
     atcoCmds.ReadFromFile(inFile);
 
-    if (atcoCmds.GetCountedUtterances() != 11 || atcoCmds.GetMaxUtterances() != 15)
+    if (atcoCmds.GetCountedUtterances() != 11 || atcoCmds.GetUtterancesLimit() != 15)
         return false;
     atcoCmds.ReadFromFile(inFile2);
     atcoCmds.ReadFromFile(inFile3);
-    if (atcoCmds.GetCountedUtterances() != 15 || atcoCmds.GetMaxUtterances() != 15)
+    if (atcoCmds.GetCountedUtterances() != 15 || atcoCmds.GetUtterancesLimit() != 15)
         return false;
     for (int i = 0; i < atcoCmds.GetCountedUtterances(); i++)
     {
         AtcoCommand atcoCommand = atcoCmds.Get(i);
-        if (atcoCommand.GetFileName().GetName().empty() || atcoCommand.GetWordSequence().empty() || atcoCommand.GetCommands() == nullptr)
+        if (atcoCommand.GetFileName().GetName().empty() || atcoCommand.GetWordSequence().empty() || atcoCommand.GetCommandsPtr() == nullptr)
             return false;
     }
 
@@ -253,7 +152,7 @@ bool testAtcoCmdsReadFromFile()
 bool testAtcoCmdsMoreThanSixCommands()
 {
     AtcoCmds atcoCmds;
-    std::ifstream inFile("WordSeqPlusCmds1.txt");
+    std::ifstream inFile(TestFilesPath + "WordSeqPlusCmds1.txt");
     atcoCmds.ReadFromFile(inFile);
     AtcoCommand atcoCommand = atcoCmds.Get(0); //note: assignment constructor
     if (atcoCommand.GetCmdCnt() != 9)
@@ -271,11 +170,11 @@ bool testAtcoCmdsMoreThanSixCommands()
 bool testFillAllowedCommands()
 {
     AllowedCmdSet allowedCmdSet;
-    std::ifstream inTypes("expectedTypes.txt");
+    std::ifstream inTypes(TestFilesPath + "expectedTypes.txt");
     if (!inTypes)
     {
         std::cerr << "Die angegebene Datei für erlaubten Commands konnte nicht gefunden werden.";
-        return -1;
+        return false;
     }
     FillAllowedCommands(allowedCmdSet, inTypes);
     const bool is_in11 = allowedCmdSet.find("DESCEND") != allowedCmdSet.end();
@@ -292,11 +191,11 @@ bool testFillAllowedCommands()
 bool testFillAllowedCommands1()
 {
     AllowedCmdSet allowedCmdSet;
-    std::ifstream inTypes("expectedTypes2.txt");
+    std::ifstream inTypes(TestFilesPath + "expectedTypes2.txt");
     if (!inTypes)
     {
         std::cerr << "Die angegebene Datei für erlaubten Commands konnte nicht gefunden werden.";
-        return -1;
+        return false;
     }
     FillAllowedCommands(allowedCmdSet, inTypes);
     const bool is_in1 = allowedCmdSet.find("CLEARED ILS") != allowedCmdSet.end();
@@ -314,9 +213,9 @@ bool testFillAllowedCommands1()
 
 bool testCountWordOccurences()
 {
-    AtcoCmds atcoCmds{10};
+    AtcoCmds atcoCmds;
     WordCntMap wordSeqCntMap;
-    std::ifstream inFile("WordSeqPlusCmds.txt");
+    std::ifstream inFile(TestFilesPath + "WordSeqPlusCmds.txt");
     atcoCmds.ReadFromFile(inFile);
     CountWordOccurences(atcoCmds, wordSeqCntMap);
     const bool c1 = wordSeqCntMap["lufthansa"] == 4;
@@ -331,9 +230,9 @@ bool testCountWordOccurences()
 
 bool testCountWordOccurences1()
 {
-    AtcoCmds atcoCmds{10};
+    AtcoCmds atcoCmds;
     WordCntMap wordSeqCntMap;
-    std::ifstream inFile("WordSeqPlusCmds1.txt");
+    std::ifstream inFile(TestFilesPath + "WordSeqPlusCmds1.txt");
     atcoCmds.ReadFromFile(inFile);
     CountWordOccurences(atcoCmds, wordSeqCntMap);
     const bool c1 = wordSeqCntMap["two"] == 3;
@@ -346,10 +245,10 @@ bool testCountWordOccurences1()
 
 bool testCountCmdOccurences()
 {
-    AtcoCmds atcoCmds{50};
+    AtcoCmds atcoCmds;
     AllowedCmdSet allowedCmdSet;
     CmdCntMap cmdSeqCntMap;
-    std::ifstream inFile("WordSeqPlusCmds.txt"), allowedCmds("expectedTypes.txt");
+    std::ifstream inFile(TestFilesPath + "WordSeqPlusCmds.txt"), allowedCmds(TestFilesPath + "expectedTypes.txt");
     atcoCmds.ReadFromFile(inFile);
     FillAllowedCommands(allowedCmdSet, allowedCmds);
     CountCmdOccurences(atcoCmds, cmdSeqCntMap, allowedCmdSet);
@@ -369,7 +268,7 @@ bool testCountCmdOccurences1()
     AtcoCmds atcoCmds{};
     AllowedCmdSet allowedCmdSet;
     CmdCntMap cmdSeqCntMap;
-    std::ifstream inFile("WordSeqPlusCmds2.txt"), allowedCmds("expectedTypes2.txt");
+    std::ifstream inFile(TestFilesPath + "WordSeqPlusCmds2.txt"), allowedCmds(TestFilesPath + "expectedTypes2.txt");
     atcoCmds.ReadFromFile(inFile);
     FillAllowedCommands(allowedCmdSet, allowedCmds);
     CountCmdOccurences(atcoCmds, cmdSeqCntMap, allowedCmdSet);
@@ -390,7 +289,7 @@ bool testOrderWordOccurences()
     AtcoCmds atcoCmds{};
     WordCntMap wordSeqCntMap;
     WordCntOrderedSet wordCntOrderedSet;
-    std::ifstream inFile("WordSeqPlusCmds.txt");
+    std::ifstream inFile(TestFilesPath + "WordSeqPlusCmds.txt");
     atcoCmds.ReadFromFile(inFile);
     CountWordOccurences(atcoCmds, wordSeqCntMap);
     OrderCountedWords(wordSeqCntMap, wordCntOrderedSet);
@@ -430,7 +329,7 @@ bool testOrderWordOccurences1()
     AtcoCmds atcoCmds = {};
     WordCntMap wordSeqCntMap;
     WordCntOrderedSet wordCntOrderedSet;
-    std::ifstream inFile("WordSeqPlusCmds1.txt");
+    std::ifstream inFile(TestFilesPath + "WordSeqPlusCmds1.txt");
     atcoCmds.ReadFromFile(inFile);
     CountWordOccurences(atcoCmds, wordSeqCntMap);
     OrderCountedWords(wordSeqCntMap, wordCntOrderedSet);
@@ -471,7 +370,7 @@ bool testOrderCmdOccurences()
     AllowedCmdSet allowedCmdSet;
     CmdCntMap cmdSeqCntMap;
     CmdCntOrderedSet cmdCntOrderedSet;
-    std::ifstream inFile("WordSeqPlusCmds.txt"), allowedCmds("expectedTypes.txt");
+    std::ifstream inFile(TestFilesPath + "WordSeqPlusCmds.txt"), allowedCmds(TestFilesPath + "expectedTypes.txt");
     atcoCmds.ReadFromFile(inFile);
     FillAllowedCommands(allowedCmdSet, allowedCmds);
     CountCmdOccurences(atcoCmds, cmdSeqCntMap, allowedCmdSet);
@@ -498,7 +397,7 @@ bool testOrderCmdOccurences1()
     AllowedCmdSet allowedCmdSet;
     CmdCntMap cmdSeqCntMap;
     CmdCntOrderedSet cmdCntOrderedSet;
-    std::ifstream inFile("WordSeqPlusCmds2.txt"), allowedCmds("expectedTypes2.txt");
+    std::ifstream inFile(TestFilesPath + "WordSeqPlusCmds2.txt"), allowedCmds(TestFilesPath + "expectedTypes2.txt");
     atcoCmds.ReadFromFile(inFile);
     FillAllowedCommands(allowedCmdSet, allowedCmds);
     CountCmdOccurences(atcoCmds, cmdSeqCntMap, allowedCmdSet);
@@ -517,3 +416,23 @@ bool testOrderCmdOccurences1()
         return false;
     return true;
 }
+/**
+bool testExtractNumbers()
+{
+    std::string utter = "fly_niki six hundred zulu contact tower now "
+                        "one two three point eight servus";
+
+    NumberExtractor numEx(utter);
+    NumberExtractor::ExtractedNumber exNum = numEx.ExtractNextFullNumber();
+    if (exNum.GetExtractedNumberAsInt() != 600 || exNum.GetNumberStringSeq() != "six hundred")
+        return false;
+    exNum = numEx.ExtractNextFullNumber();
+    if ((fabs(exNum.GetExtractedNumberAsDouble() - 123.8) > 0.0001) || (exNum.GetNumberStringSeq() != "one two three point eight"))
+        return false;
+    if (exNum.GetNumberOfStringsForNumber() != 5)
+        return false;
+    exNum = numEx.ExtractNextFullNumber();
+    if ((exNum.IsExtractedNumberValid()) || (exNum.GetNumberStringSeq() != ""))
+        return false;
+    return true;
+}*/

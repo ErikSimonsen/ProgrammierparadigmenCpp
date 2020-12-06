@@ -15,7 +15,7 @@ void FillAllowedCommands(AllowedCmdSet &allowedCmdSet, std::ifstream &infile)
     }
 }
 
-void CountWordOccurences(const AtcoCmds &atcoCmds, WordCntMap &wordCntMap)
+void CountWordOccurences(AtcoCmds &atcoCmds, WordCntMap &wordCntMap)
 {
     std::string word;
     for (int i = 0; i < atcoCmds.GetCountedUtterances(); ++i)
@@ -37,7 +37,7 @@ void OrderCountedWords(const WordCntMap &wordCntMap, WordCntOrderedSet &wordCntO
     }
 }
 
-void CountCmdOccurences(const AtcoCmds &atcoCmds, CmdCntMap &cmdCntMap, const AllowedCmdSet &allowedCmdSet)
+void CountCmdOccurences(AtcoCmds &atcoCmds, CmdCntMap &cmdCntMap, const AllowedCmdSet &allowedCmdSet)
 {
     for (int i = 0; i < atcoCmds.GetCountedUtterances(); ++i)
     {

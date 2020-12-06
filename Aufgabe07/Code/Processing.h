@@ -1,5 +1,5 @@
-#ifndef AUFGABE6_PROCESSING_H
-#define AUFGABE6_PROCESSING_H
+#ifndef AUFGABE7_PROCESSING_H
+#define AUFGABE7_PROCESSING_H
 
 #include <map>
 #include <set>
@@ -24,9 +24,9 @@ typedef std::set<std::pair<std::string, int>, CompareCount> CmdCntOrderedSet;
 
 void FillAllowedCommands(AllowedCmdSet &allowedCmdSet, std::ifstream &infile);
 
-void CountWordOccurences(const AtcoCmds &atcoCommands, WordCntMap &wordCntMap);
-
-void CountCmdOccurences(const AtcoCmds &atcoCommands, CmdCntMap &cmdCntMap, const AllowedCmdSet &allowedCmdSet);
+//both methods cant have &atcoCommands as constant, because its Get Method is called which in turn can throw an exception see (DynArray.Get())
+void CountWordOccurences(AtcoCmds &atcoCommands, WordCntMap &wordCntMap);
+void CountCmdOccurences(AtcoCmds &atcoCommands, CmdCntMap &cmdCntMap, const AllowedCmdSet &allowedCmdSet);
 
 void OrderCountedWords(const WordCntMap &wordCntMap, WordCntOrderedSet &wordCntOrderedSet);
 
@@ -37,4 +37,4 @@ bool IsLineWordSequence(std::string &line);
 bool IsLineCommandSequence(std::string &line);
 
 bool IsLineTimestamp(std::string &line);
-#endif //AUFGABE6_PROCESSING_H
+#endif //AUFGABE7_PROCESSING_H

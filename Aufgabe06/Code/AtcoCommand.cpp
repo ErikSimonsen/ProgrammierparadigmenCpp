@@ -53,12 +53,15 @@ std::string AtcoCommand::GetCommand(const int &i) const
     this->CheckAgainstCmdCnt(i);
     return this->commands[i];
 }
-
-std::string *AtcoCommand::GetCommands() const
+void AtcoCommand::SetCommand(const std::string &text, const int i)
+{
+    this->CheckAgainstCmdCnt(i);
+    this->commands[i] = text;
+}
+const std::string *AtcoCommand::GetCommandsPtr() const
 {
     return this->commands;
 }
-
 int AtcoCommand::GetCmdCnt() const
 {
     return this->cmdCnt;
@@ -86,7 +89,7 @@ void AtcoCommand::CheckAgainstCmdCnt(const int &i) const
 
 void AtcoCommand::Resize()
 {
-    size_t newSize = this->maxCommands + 5;
+    int newSize = this->maxCommands + 5;
     std::string *resizedArr = new std::string[newSize];
 
     for (int i = 0; i < this->cmdCnt; i++)
@@ -120,9 +123,9 @@ std::string AtcoCommand::GetWordSequence() const
     return this->wordSequence;
 }
 
-void AtcoCommand::SetWordSequence(std::string const &wordSequence)
+void AtcoCommand::SetWordSequence(std::string const &wordSeq)
 {
-    this->wordSequence = wordSequence;
+    this->wordSequence = wordSeq;
 }
 void AtcoCommand::SetFileName(FileName const &fileName)
 {

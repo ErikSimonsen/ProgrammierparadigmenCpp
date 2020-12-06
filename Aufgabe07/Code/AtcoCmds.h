@@ -1,30 +1,30 @@
-#ifndef AUFGABE6_ATCOCMDS_H
-#define AUFGABE6_ATCOCMDS_H
-
+#ifndef AUFGABE7_ATCOCMDS_H
+#define AUFGABE7_ATCOCMDS_H
+#include "DynArray.h"
 #include "AtcoCommand.h"
 
 class AtcoCmds
 {
 public:
-    AtcoCmds(int maxUtterances = 0);
-    AtcoCmds(const AtcoCmds &copy);
-    AtcoCmds &operator=(const AtcoCmds &copy);
-    ~AtcoCmds();
-
+    /**
+      * No copy-constructor and assignment operator are needed because they are implemented in DynArray.cpp (which is the
+      * only Class that allocates Heap Memory). In the default generated assignment operator or copy constructor of this class a flat copy
+      * of each member var is made which trough the assignment of this->atcoCommands = copy.atcoCommands calls the assignment operator
+      * of the DynArray, which then correctly deletes the old memory and allocates the new.
+      * For the case that we have an DynArray<AtcoCommand> whose AtcoCommand-Objects have an DynArray<std::string> themselves this default assignment operator
+      * will call the default assignment operator of the AtcoCommand class which then, trough the assignment of this->commands = copy.commands
+      * calls the assignment operator its own member DynArray<std::string>, which then gets resolved (first the assignment opreator of DynArray<std::string> is processed
+      * and afterwards the programm bubbles up and resolves the assignment operator of DynArray<AtcoCommand>.
+    */
     void Add(AtcoCommand &atcoCommand);
 
     void ReadFromFile(std::ifstream &ifstream);
-    AtcoCommand &Get(const int &i) const; //call check against utt cnt () here, return pointer?
-    AtcoCommand *GetAtcoCommands() const;
-    int GetMaxUtterances() const;
+    AtcoCommand Get(const int &pos);
+    void Set(const AtcoCommand &atcoCommand, const int &pos);
+    int GetUtterancesLimit() const;
     int GetCountedUtterances() const;
 
 private:
-    int maxUtterances;
-    int utterancesCnt = 0;
-    AtcoCommand *atcoCommands;
-    void Free();
-    void Resize();
-    void CheckAgainstUttCnt(const int &i) const;
+    DynArray<AtcoCommand> atcoCommands;
 };
-#endif //AUFGABE6_ATCOCMDS_H
+#endif //AUFGABE7_ATCOCMDS_H

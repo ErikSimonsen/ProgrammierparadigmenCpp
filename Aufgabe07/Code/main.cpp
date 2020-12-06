@@ -39,16 +39,11 @@ bool ExecuteTests()
     PERFORM_AND_OUTPUT(testTrim);
     PERFORM_AND_OUTPUT(testFileNameSplit1);
     PERFORM_AND_OUTPUT(testFileNameSplit2);
-    PERFORM_AND_OUTPUT(testAtcoCmdAdd);
-    PERFORM_AND_OUTPUT(testAtcoCmdGet);
-    PERFORM_AND_OUTPUT(testAtcoCmdResize);
-    PERFORM_AND_OUTPUT(testAtcoCopyConstructor);
-    PERFORM_AND_OUTPUT(testAtcoAssignmentOperator);
-    PERFORM_AND_OUTPUT(testAtcoCmdsAdd);
-    PERFORM_AND_OUTPUT(testAtcoCmdsGet);
-    PERFORM_AND_OUTPUT(testAtcoCmdsResize);
-    PERFORM_AND_OUTPUT(testAtcoCmdsCopyConstructor);
-    PERFORM_AND_OUTPUT(testAtcoCmdsAssignmentOperator);
+    PERFORM_AND_OUTPUT(testDynArrayAdd);
+    PERFORM_AND_OUTPUT(testDynArraySet);
+    PERFORM_AND_OUTPUT(testDynArrayResize);
+    PERFORM_AND_OUTPUT(testDynArrayCopyConstructor);
+    PERFORM_AND_OUTPUT(testDynArrayAssignmentOperator);
     PERFORM_AND_OUTPUT(testAtcoCmdsReadFromFile);
     PERFORM_AND_OUTPUT(testAtcoCmdsMoreThanSixCommands);
     PERFORM_AND_OUTPUT(testFillAllowedCommands);
@@ -73,18 +68,26 @@ void ReadFileAndPrintContents()
     CmdCntMap cmdSeqCntMap;
     WordCntOrderedSet wordCntOrderedSet;
     CmdCntOrderedSet cmdCntOrderedSet;
-
-    std::ifstream infile("WordSeqPlusCmds1.txt");
-    std::ifstream inTypes("bigWordsFileExpectedTypes.txt");
+    std::string assetsPath = "testAssets/";
+    std::string inFilePath = assetsPath + "WordSeqPlusCmds1.txt";
+    std::string inTypesPath = assetsPath + "bigWordsFileExpectedTypes.txt";
+    std::ifstream infile(inFilePath);
+    std::ifstream inTypes(inTypesPath);
 
     if (!infile)
     {
-        std::cerr << "Die angegebene Datei für die Word-Sequenzen konnte nicht gefunden werden.";
+        std::cerr << "Die angegebene Word-Sequenz Datei: " + inFilePath + " konnte im Build-Verzeichnis nicht gefunden werden."
+                  << "\n";
+        std::cerr << "Falls das Verzeichnis " + assetsPath + " nicht in ihrem Build-Verzeichnis vorhanden ist"
+                                                             ", löschen Sie das Build-Verzeichnis und bauen Sie nocheinmal die CMake Datei.";
         return;
     }
     if (!inTypes)
     {
-        std::cerr << "Die angegebene Datei für die erlaubten Kommandos konnte nicht gefunden werden.";
+        std::cerr << "Die angegebene Erlaubte-Kommandos Datei: " + inTypesPath + " konnte im Build-Verzeichnis nicht gefunden werden."
+                  << "\n";
+        std::cerr << "Falls das Verzeichnis " + assetsPath + " nicht in ihrem Build-Verzeichnis vorhanden ist"
+                                                             ", löschen Sie das Build-Verzeichnis und bauen Sie nocheinmal die CMake Datei.";
         return;
     }
 

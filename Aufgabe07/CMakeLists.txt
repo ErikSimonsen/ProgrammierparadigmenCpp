@@ -1,23 +1,29 @@
 cmake_minimum_required(VERSION 3.17)
-project(Aufgabe6)
+project(Aufgabe7)
 
 set(CMAKE_CXX_STANDARD 17)
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
-
+if (MSVC)
+    # warning level 4 and all warnings as errors
+    add_compile_options(/W4 /WX)
+else()
+    # lots of warnings and all warnings as errors
+    add_compile_options(-Wall -Wextra -pedantic -Werror)
+endif()
 include_directories(Code)
-configure_file(Code/expectedTypes.txt ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
-configure_file(Code/expectedTypes2.txt ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
-configure_file(Code/WordSeqPlusCmds.txt ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
-configure_file(Code/WordSeqPlusCmds1.txt ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
-configure_file(Code/WordSeqPlusCmds2.txt ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
-configure_file(Code/BigWordSeqPlusCmdsFile.txt ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
-configure_file(Code/bigWordsFileExpectedTypes.txt ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+# Note: does not work if testAssets exists already as file
+if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/testAssets)
+    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/testAssets)
+endif()
+file(COPY Code/testAssets/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/testAssets/ FILES_MATCHING PATTERN "*.txt")
 
-add_executable(Aufgabe6
-        Code/AtcoCommand.cpp
+add_executable(Aufgabe7
         Code/AtcoCommand.h
+        Code/AtcoCommand.cpp
+        Code/AtcoCmds.h
+        Code/AtcoCmds.cpp
         Code/FileName.cpp
         Code/FileName.h
+        Code/DynArray.h
         Code/Processing.cpp
         Code/Processing.h
         Code/dosFarben.h
@@ -26,4 +32,4 @@ add_executable(Aufgabe6
         Code/Tests.cpp
         Code/Tests.h
         Code/Util.cpp
-        Code/Util.h Code/AtcoCmds.cpp Code/AtcoCmds.h)
+        Code/Util.h)

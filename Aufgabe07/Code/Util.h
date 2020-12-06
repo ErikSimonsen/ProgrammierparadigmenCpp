@@ -1,7 +1,7 @@
-#ifndef AUFGABE6_UTIL_H
-#define AUFGABE6_UTIL_H
+#ifndef AUFGABE7_UTIL_H
+#define AUFGABE7_UTIL_H
 
 #include <string>
 
 std::string Trim(const std::string &string);
-#endif //AUFGABE6_UTIL_H
+#endif //AUFGABE7_UTIL_H

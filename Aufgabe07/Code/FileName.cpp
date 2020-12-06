@@ -3,64 +3,64 @@
 
 FileName::FileName(const std::string &filename)
 {
-    this->SetName(filename);
+    SetName(filename);
 }
 
 void FileName::SplitName()
 {
-    if (this->name.length() != 23)
+    if (name.length() != 23)
         throw std::invalid_argument("File Name has to be the following format: YYYY-MM-DD__hh-mm-ss-ms (23 characters long)");
     try
     {
-        this->year = std::stoi(this->name.substr(0, 4));
-        this->month = std::stoi(this->name.substr(5, 2));
-        this->day = std::stoi(this->name.substr(8, 2));
-        this->hour = std::stoi(this->name.substr(12, 2));
-        this->minute = std::stoi(this->name.substr(15, 2));
-        this->seconds = std::stoi(this->name.substr(18, 2));
-        this->milliseconds = std::stoi(this->name.substr(21, 2));
+        year = std::stoi(name.substr(0, 4));
+        month = std::stoi(name.substr(5, 2));
+        day = std::stoi(name.substr(8, 2));
+        hour = std::stoi(name.substr(12, 2));
+        minute = std::stoi(name.substr(15, 2));
+        seconds = std::stoi(name.substr(18, 2));
+        milliseconds = std::stoi(name.substr(21, 2));
     }
-    catch (std::invalid_argument &e)
+    catch (std::invalid_argument&)
     {
-        throw std::invalid_argument("File Name has to be the following format: YYYY-MM-DD__hh-mm-ss-ms");
+        throw std::invalid_argument("File Name has to be the following format: YYYY-MM-DD__hh-mm-ss-ms. ");
     }
 }
 
-void FileName::SetName(const std::string &name)
+void FileName::SetName(const std::string &val)
 {
-    this->name = name;
-    this->SplitName();
+    name = val;
+    SplitName();
 }
 // Getters
 std::string FileName::GetName() const
 {
-    return this->name;
+    return name;
 }
 int FileName::GetYear() const
 {
-    return this->year;
+    return year;
 }
 int FileName::GetMonth() const
 {
-    return this->month;
+    return month;
 }
 int FileName::GetDay() const
 {
-    return this->day;
+    return day;
 }
 int FileName::GetHour() const
 {
-    return this->hour;
+    return hour;
 }
 int FileName::GetMinute() const
 {
-    return this->minute;
+    return minute;
 }
 int FileName::GetSeconds() const
 {
-    return this->seconds;
+    return seconds;
 }
 int FileName::GetMilliseconds() const
 {
-    return this->milliseconds;
+    return milliseconds;
 }

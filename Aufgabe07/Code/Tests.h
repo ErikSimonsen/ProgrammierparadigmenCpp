@@ -5,25 +5,17 @@ bool testTrim();
 bool testFileNameSplit1();
 bool testFileNameSplit2();
 
-bool testAtcoCmdAdd();
-bool testAtcoCmdGet();
-bool testAtcoCmdResize();
-bool testAtcoCmdReset();
-bool testAtcoCopyConstructor();
-bool testAtcoAssignmentOperator();
+bool testDynArrayAdd();
+bool testDynArraySet();
+bool testDynArrayResize();
+bool testDynArrayCopyConstructor();
+bool testDynArrayAssignmentOperator();
 
-bool testAtcoCmdsAdd();
-bool testAtcoCmdsGet();
-bool testAtcoCmdsResize();
-bool testAtcoCmdsCopyConstructor();
-bool testAtcoCmdsAssignmentOperator();
 bool testAtcoCmdsReadFromFile();
 bool testAtcoCmdsMoreThanSixCommands();
 
 bool testFillAllowedCommands();
 bool testFillAllowedCommands1();
-bool testFillAtcoCommands();
-bool testFillAtcoCommands1();
 
 bool testCountWordOccurences();
 bool testCountWordOccurences1();
@@ -35,4 +27,5 @@ bool testOrderWordOccurences1();
 bool testOrderCmdOccurences();
 bool testOrderCmdOccurences1();
 
+bool testExtractNumbers();
 #endif //TESTS_HEADER

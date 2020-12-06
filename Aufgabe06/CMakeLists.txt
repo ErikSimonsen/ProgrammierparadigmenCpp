@@ -2,8 +2,13 @@ cmake_minimum_required(VERSION 3.17)
 project(Aufgabe6)
 
 set(CMAKE_CXX_STANDARD 17)
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
-
+if (MSVC)
+    # warning level 4 and all warnings as errors
+    add_compile_options(/W4 /WX)
+else()
+    # lots of warnings and all warnings as errors
+    add_compile_options(-Wall -Wextra -pedantic -Werror)
+endif()
 include_directories(Code)
 configure_file(Code/expectedTypes.txt ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 configure_file(Code/expectedTypes2.txt ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)

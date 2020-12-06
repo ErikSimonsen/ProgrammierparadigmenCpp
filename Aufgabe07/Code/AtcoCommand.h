@@ -1,59 +1,49 @@
-#ifndef AUFGABE6_ATCOCOMMAND_H
-#define AUFGABE6_ATCOCOMMAND_H
+#ifndef AUFGABE7_ATCOCOMMAND_H
+#define AUFGABE7_ATCOCOMMAND_H
 
 #include <string>
 #include "FileName.h"
+#include "DynArray.h"
 
 class AtcoCommand
 {
 public:
+
     /**
-     * this is only needed so that in Resize() in AtcoCmds.cpp we can create an array of AtcoCommands on the heap,
-     * which will get filled afterwards with the contents of the old array.
-     * This is why this class also has no setters, because the the default constructor is only used when 
-     * AtcoCmds allocate an Array (Heap Memory) of AtcoCommands (in its constructor and Resize())
+      * No copy constructor and assignment operator are needed because they are implemented in DynArray.cpp (which is the
+      * only Class that allocates Heap Memory). In the default generated assignment operator or copy constructor of this class a flat copy
+      * of each member var is made which trough the assignment of this->commands = copy.commands calls the assignment operator
+      * of the DynArray<std::string>, which then correctly deletes the old memory and allocates the new array of strings.
     */
-    //ToDo: Refactor?
+    /**
+      * The default constructor is only needed so that in Resize() in DynArray.cpp we can create an array of AtcoCommands on the heap,
+      * which will get filled afterwards with the contents of the old array.
+      * This is why this class also has no setters, because the the default constructor is only used when
+      * AtcoCmds allocate an Array (Heap Memory) of AtcoCommands (in its constructor and Resize())
+     */
     AtcoCommand() = default;
 
     AtcoCommand(const FileName &filename, std::string const &wordSequence);
 
-    AtcoCommand(AtcoCommand const &copy);
-    AtcoCommand &operator=(const AtcoCommand &copy);
-    ~AtcoCommand();
-
     void AddCommand(std::string const &command);
 
     FileName GetFileName() const;
-
+    std::string GetWordSequence() const;
     void SetWordSequence(std::string const &wordSequence);
     void SetFileName(FileName const &fileName);
 
-    std::string GetWordSequence() const;
+    std::string GetCommand(const int &i);
 
-    std::string GetCommand(const int &i) const;
-
-    std::string *GetCommands() const;
+    const std::string *GetCommandsPtr() const;
+    void SetCommand(const std::string &text, const int &i);
 
     int GetCmdCnt() const;
 
 private:
     FileName filename;
     std::string wordSequence;
-    int maxCommands = 5;
-    int cmdCnt = 0;
-    std::string *commands = nullptr;
 
-    void CheckAgainstCmdCnt(const int &i) const;
-
-    void Resize();
-
-    //Diese Methode existiert, da ich nicht standardmäßig beim Erstellen von AtcoCommand-Objekten Heap Speicher für die this->commands
-    //Membervariable allokieren möchte, welcher dann vielleicht garnicht genutzt wird. Daher ist this->commands standardmäßig ein nullptr
-    //und allokiert erst Heap-Speicher wenn ein Kommando (String) hinzugefügt wird.
-    void InitCommands();
-
-    void FreeCommands();
+    DynArray<std::string> commands;
 };
 
-#endif //AUFGABE6_ATCOCOMMAND_H
+#endif //AUFGABE7_ATCOCOMMAND_H

@@ -8,123 +8,44 @@ AtcoCommand::AtcoCommand(const FileName &filename, const std::string &wordSequen
     this->filename = filename; //flache Kopie
     this->wordSequence = wordSequence;
 }
-
-AtcoCommand::AtcoCommand(const AtcoCommand &copy)
-{
-    this->filename = copy.filename;
-    this->wordSequence = copy.wordSequence;
-    this->maxCommands = copy.maxCommands;
-    this->cmdCnt = copy.cmdCnt;
-    //no need to delete the old pointer, because it is an nullptr per default
-    this->commands = new std::string[this->maxCommands];
-    for (int i = 0; i < copy.maxCommands; i++)
-    {
-        this->commands[i] = copy.commands[i];
-    }
-}
-
-AtcoCommand &AtcoCommand::operator=(const AtcoCommand &copy)
-{
-    if (this != &copy)
-    {
-        this->FreeCommands();
-
-        this->filename = copy.filename;
-        this->wordSequence = copy.wordSequence;
-
-        this->commands = new std::string[copy.maxCommands];
-        this->maxCommands = copy.maxCommands;
-        this->cmdCnt = copy.cmdCnt;
-
-        for (int i = 0; i < this->cmdCnt; i++)
-        {
-            this->commands[i] = copy.commands[i];
-        }
-    }
-    return *this;
-}
-AtcoCommand::~AtcoCommand()
-{
-    this->FreeCommands();
-}
-
-std::string AtcoCommand::GetCommand(const int &i) const
-{
-    this->CheckAgainstCmdCnt(i);
-    return this->commands[i];
-}
-
-std::string *AtcoCommand::GetCommands() const
-{
-    return this->commands;
-}
-
-int AtcoCommand::GetCmdCnt() const
-{
-    return this->cmdCnt;
-}
-void AtcoCommand::AddCommand(const std::string &command)
-{
-    if (this->commands == nullptr)
-    {
-        this->InitCommands();
-    }
-
-    if (this->cmdCnt == this->maxCommands)
-    {
-        this->Resize();
-    }
-    this->commands[this->cmdCnt] = command;
-    this->cmdCnt += 1;
-}
-
-void AtcoCommand::CheckAgainstCmdCnt(const int &i) const
-{
-    if (i >= this->cmdCnt)
-        throw std::out_of_range("invalid index");
-}
-
-void AtcoCommand::Resize()
-{
-    size_t newSize = this->maxCommands + 5;
-    std::string *resizedArr = new std::string[newSize];
-
-    for (int i = 0; i < this->cmdCnt; i++)
-    {
-        resizedArr[i] = this->commands[i];
-    }
-
-    this->FreeCommands();
-    this->maxCommands = newSize;
-    this->commands = resizedArr;
-}
-
-void AtcoCommand::InitCommands()
-{
-    this->commands = new std::string[this->maxCommands];
-}
-
-void AtcoCommand::FreeCommands()
-{
-    delete[] this->commands;
-    this->commands = nullptr;
+void AtcoCommand::AddCommand(const std::string &command) {
+    commands.Add(command);
 }
 
 FileName AtcoCommand::GetFileName() const
 {
-    return this->filename;
+    return filename;
 }
 
 std::string AtcoCommand::GetWordSequence() const
 {
-    return this->wordSequence;
+    return wordSequence;
 }
 
-void AtcoCommand::SetWordSequence(std::string const &wordSequence)
+void AtcoCommand::SetWordSequence(std::string const &wordSeq)
 {
-    this->wordSequence = wordSequence;
+    wordSequence = wordSeq;
 }
 void AtcoCommand::SetFileName(FileName const &fileName)
 {
-    this->filename = fileName;
+    filename = fileName;
+}
+
+std::string AtcoCommand::GetCommand(const int &i)
+{
+    return commands.Get(i);
+}
+
+const std::string *AtcoCommand::GetCommandsPtr() const
+{
+    return commands.GetArrPtr();
+}
+void AtcoCommand::SetCommand(const std::string &text, const int &i)
+{
+    commands.Set(text, i);
+}
+
+int AtcoCommand::GetCmdCnt() const
+{
+    return commands.GetCntElements();
 }

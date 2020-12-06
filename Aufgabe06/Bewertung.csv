@@ -1,14 +1,14 @@
-;Store this file as Bewertung.xlsx in folder Aufgabe06! After that create the file Bewertung.csv from the Bewertung.xlsx file and store it also in folder Aufgabe06!;;;;Kommentar;;
+ï»¿;Store this file as Bewertung.xlsx in folder Aufgabe06! After that create the file Bewertung.csv from the Bewertung.xlsx file and store it also in folder Aufgabe06!;;;;Kommentar;;
 Current Date;23.11.2020;;;Please only process the green fields, they mostly contain drop down menus.;;In the following, do not be too critical with yourself. If you have implemented a functionality and my requirements were not so clear, your results are still O.K. especially when you have created tests which test your interpretation!!!;
-Bachelor or Master;Master;;;;Bachelor oder Master eintragen;;
+Bachelor or Master;Bachelor;;;;Bachelor oder Master eintragen;;
 Dual Student?;no;;;;Bachelor oder Master eintragen;;
 "Operating System 
-(e.g. Windows, Linux)";Windows;;;;Bachelor oder Master eintragen;;
-IDE (e.g. Visual Studio, CLion …);Visual Studio Code, Clion;;;;Bachelor oder Master eintragen;;
-Vorname;Erik;;;;;;
-Nachname;Simonsen;;;;;;
-User Id;id099703;;;;;;
-Mat-Number;70455429;;;;;;
+(e.g. Windows, Linux)";;;;;Bachelor oder Master eintragen;;
+IDE (e.g. Visual Studio, CLion â€¦);;;;;Bachelor oder Master eintragen;;
+Vorname;Fritz Karsten;;;;;;
+Nachname;MÃ¼ller-Thurgau zu Hohenfels;;;;;;
+User Id;id007007;;;;;;
+Mat-Number;700070007;;;;;;
 ;;;;Brown the completed criteria;;;
 General;Your Evaluation;Max;Result;How to evaluate by yourself;;Your Comment, why you think your solution is also correct.;Answers Schmidt / Helmke
 yes or no?;yes;3;3;Did you upload something before deadline to SVN and this approximates the expected solution (not just code which solves something completely different)?;;;
@@ -16,14 +16,14 @@ Are the correct files with correct file names in the correct folders? Otherwise 
 Did you only upload the necessary files to SVN?;yes;1;1 ;Are your uploaded files all necessary? (no executables or object files etc. are uploaded)?;;;
 ;;;;;;;
 All Exercises;Your Evaluation;Max;Result;How to evaluate by yourself;;;
-yes or no?;yes;3;3 ;Did your code compile also for Visual Studio 2019 on computer of B. Schmidt or H. Helmke?;;;
-yes or no?;yes;3;3;Did your code compile without warnings for Warning Level 4 on Visual Studio 2019? Ask  your colleagues.;;;
+yes or no?;no;3;-5 ;Did your code compile also for Visual Studio 2019 on computer of B. Schmidt or H. Helmke?;;;siehe Feedback-Datei 
+yes or no?;no;3;0;Did your code compile without warnings for Warning Level 4 on Visual Studio 2019? Ask  your colleagues.;;;siehe Feedback-Datei 
 ;;;;;;;
 Exercise 6-1;Your Evaluation;Max;Result;How to evaluate by yourself;;;
 yes or no?;yes;1;1;Are all global variables replaced (static class variables are still allowed)?  Very few points, because not in eval criteria in pdf file.;;;
 ;;;;;;;
 Exercise 6-2;Your Evaluation;Max;Result;How to evaluate by yourself;;;
-yes or no?;yes;1;1;Did you replace all struct instances by classes? If you search for struct, you get no match (except in comments)?   Very few points, because not in eval criteria in pdf file.;;Die Structs AtcoCmds und AtcoCommand, sowie DateTime habe ich mit Klassen ersetzt. Allerdings habe ich noch ein Struct für das Sortieren eines Sets (siehe Processing.h).;
+yes or no?;yes;1;1;Did you replace all struct instances by classes? If you search for struct, you get no match (except in comments)?   Very few points, because not in eval criteria in pdf file.;;;
 yes or no?;yes;1;1;All member attributes  are in private area of the classes and only accessible via Get-ter and Set-ter methods?   Very few points, because not in eval criteria in pdf file.;;;
 ;;;;;;;
 Exercise 6-3;Your Evaluation;Max;Result;How to evaluate by yourself;;;
@@ -32,30 +32,30 @@ yes or no?;yes;2;2;Is picture exercise6-3-MoreThanSix02.jpg uploaded to Images f
 yes or no?;yes;2;2;Is picture exercise6-3-MoreThanSix03.jpg uploaded to Images folder, showing the code of the copy-constructor of AtcoCommand?;;;
 yes or no?;yes;2;2;Is picture exercise6-3-MoreThanSix04.jpg uploaded to Images folder, showing the code of the assignment-operator of AtcoCommand?;;;
 Exercise 6-4;Your Evaluation;Max;Result;How to evaluate by yourself;;;
-yes or no?;yes;2;2;Is picture exercise6-4-TestAssOp01.jpg uploaded to SVN to show test of assignment-operator of first class (different from AtcoCommand of exercise 6-3)?;;Ich habe nur 2 Klassen die Heap-Speicher allokieren: AtcoCommand und AtcoCmds, daher Duplikate von 6-3 möglich.;
+yes or no?;yes;2;2;Is picture exercise6-4-TestAssOp01.jpg uploaded to SVN to show test of assignment-operator of first class (different from AtcoCommand of exercise 6-3)?;;;
 yes or no?;yes;2;2;Is picture exercise6-4-TestAssOp02.jpg uploaded to SVN to show test of assignment-operator of second class (different from AtcoCommand of exercise 6-3)?;;;
 yes or no?;yes;2;2;Is picture exercise6-4-TestCopyConstr01.jpg uploaded to SVN to show test of copy-constructor  of first class (different from AtcoCommand of exercise 6-3)?;;;
 yes or no?;yes;2;2;Is picture exercise6-4-TestCopyConstr02.jpg uploaded to SVN to show test of copy-constructor  of second class (different from AtcoCommand of exercise 6-3)?;;;
 yes or no?;yes;2;2;Are all the tests well documented in the beginning of the tests? It should be clear what the test is testing and when the output is true and when false.;;;
 yes or no?;yes;2;2;Are all the tests independent from each other? The tests must be able to run in any order. They must clear the heap memory by themselves.;;;
-yes or no?;yes;1;1;Is picture exercise6-4-AssOp01.jpg uploaded to SVN to show code of  assignment-operator of first class (different from AtcoCommand of exercise 6-3)?;;Ich habe nur 2 Klassen die Heap-Speicher allokieren: AtcoCommand und AtcoCmds, daher Duplikate von 6-3 möglich.;
+yes or no?;yes;1;1;Is picture exercise6-4-AssOp01.jpg uploaded to SVN to show code of  assignment-operator of first class (different from AtcoCommand of exercise 6-3)?;;;
 yes or no?;yes;1;1;Is picture exercise6-4-AssOp02.jpg uploaded to SVN to show code of assignment-operator of second class (different from AtcoCommand of exercise 6-3)?;;;
 yes or no?;yes;1;1;Is picture exercise6-4-CopyConstr01.jpg uploaded to SVN to show code of  copy-constructor of first class (different from AtcoCommand of exercise 6-3)?;;;
 yes or no?;yes;1;1;Is picture exercise6-4-CopyConstr02.jpg uploaded to SVN to show code of  copy-constructor of second class (different from AtcoCommand of exercise 6-3)?;;;
 The following you can only evaluate, when you have finally checked in your code. Then you get the final evaluation criteria.;;;;;;;
-yes or no?;yes;7;7;Stress Test: Put your tests in a loop and call them all again and again, they should have at least 60 seconds of runtime. The system should not crash. This should show that you have no memory leaks.  Is the program still stable and the program does not crash?;;Hhe: Criteria will be updated;
+yes or no?;yes;7;7;Stress Test: Put your tests in a loop and call them all again and again, they should have at least 60 seconds of runtime. The system should not crash. This should show that you have no memory leaks.  Is the program still stable and the program does not crash?;;Hhe: Criteria will be updated;siehe Feedback, kÃ¶nnte man geschickter machen, zu viele Ausgaben
 yes or no?;yes;1;1;Is the file StressTestLoop.jpg uploaded to SVN Images folder, which shows a screen dump of your code, in which all your tests run in a loop?;;Hhe: Criteria will be updated;
 ;;;;;;;
 ;;;;;;;
 ;;;;;;;
 ;Max Points;;46;;;;
-;Result Sum;;46;;;;
-;Master;;;;;;
-;Percentage;;100,0%;;;;
+;Result Sum;;35;;;;
+;Bachelor;;;;;;
+;Percentage;;92.1%;;;;
 ;;;;;;;
 ;;;;"Speichern Sie diese Datei im Ordner Aufgabe06 unter dem Namen
 Bewertung.xlsx als Excel-Datei ab. Speichern  Sie die Datei
-außerdem als csv-Datei (comma seperates values) als Bewertung.csv im gleichen Ordner ab. Beim Speichern als csv-Datei muss dieses Arbeitsblatt geöffnet sein. Stellen Sie sicher, dass Sie zuvor auch die Excel-Datei selbst abgespeichert haben";;;
+auÃŸerdem als csv-Datei (comma seperates values) als Bewertung.csv im gleichen Ordner ab. Beim Speichern als csv-Datei muss dieses Arbeitsblatt geÃ¶ffnet sein. Stellen Sie sicher, dass Sie zuvor auch die Excel-Datei selbst abgespeichert haben";;;
 ;;;;;;;
 ;;;;;;;
 ;;;;;;;

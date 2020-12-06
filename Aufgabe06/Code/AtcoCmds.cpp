@@ -60,7 +60,7 @@ AtcoCommand &AtcoCmds::Get(const int &i) const
 
 void AtcoCmds::Resize()
 {
-    size_t newSize = this->maxUtterances + 5;
+    int newSize = this->maxUtterances + 5;
     AtcoCommand *resizedArr = new AtcoCommand[newSize];
 
     for (int i = 0; i < this->utterancesCnt; i++)

@@ -33,7 +33,8 @@ public:
 
     std::string GetCommand(const int &i) const;
 
-    std::string *GetCommands() const;
+    const std::string *GetCommandsPtr() const;
+    void SetCommand(const std::string &text, const int i);
 
     int GetCmdCnt() const;
 
