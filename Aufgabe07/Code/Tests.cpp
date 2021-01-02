@@ -561,5 +561,10 @@ bool testExtractDecimalNumbers(){
     bool b_success2 = true;
     numEx = testForDecimalNumbers(wordSeq2, expNumbers2, b_success2);
 
-    return b_success && b_success2;
+    std::string wordSeq3 = "contact director one one nine point zero two zero";
+    std::vector<double> expNumbers3 = { 119.020 };
+    bool b_success3 = true;
+    numEx = testForDecimalNumbers(wordSeq3, expNumbers3, b_success3);
+
+    return b_success && b_success2 && b_success3;
 }

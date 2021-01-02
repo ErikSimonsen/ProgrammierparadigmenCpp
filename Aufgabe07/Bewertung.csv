@@ -1,0 +1,67 @@
+﻿;Store this file as Bewertung.xlsx in folder Aufgabe07! After that create the file Bewertung.csv from the Bewertung.xlsx file and store it also in folder Aufgabe07!;;;;Kommentar;;
+Current Date;14.12.2020;;;Please only process the green fields, they mostly contain drop down menus.;;In the following, do not be too critical with yourself. If you have implemented a functionality and my requirements were not so clear, your results are still O.K. especially when you have created tests which test your interpretation!!!;
+Bachelor or Master;Master;;;;Bachelor oder Master eintragen;;
+Dual Student?;no;;;;Bachelor oder Master eintragen;;
+"Operating System 
+(e.g. Windows, Linux)";Linux;;;;Bachelor oder Master eintragen;;
+IDE (e.g. Visual Studio, CLion …);VS Code;;;;Bachelor oder Master eintragen;;
+Vorname;Erik;;;;;;
+Nachname;Simonsen;;;;;;
+User Id;id099703;;;;;;
+Mat-Number;70455429;;;;;;
+;;;;Brown the completed criteria;;;
+General;Your Evaluation;Max;Result;How to evaluate by yourself;;Your Comment, why you think your solution is also correct.;Answers Schmidt / Helmke
+yes or no?;no;3;0;Did you upload something before deadline to SVN and this approximates the expected solution (not just code which solves something completely different, Numbers most be extracted)?;;Ich habe die Abgabe am Montag (14.12) hochgeladen, da die Abgabe bisher immer Montags war, daher habe ich es leider nicht gemerkt das die Abgabe bereits Sonntag war. Ich hoffe die Abgabe kann trotzdem onoch bewertet werden.;Abzug wegen verspätete Abgabe
+Are the correct files with correct file names in the correct folders? Otherwise heavy lose of points possible!!!;no;1;-5 ;The folder name is Aufgabe07  and the code is in folder Aufgabe07\Code and there exists a file Aufgabe07\Fertig.txt and there exist two files Aufgabe07\Bewertung.xlsx and  Aufgabe07\Bewertung.csv.;;;"Die Csv-Datei war nicht vorhanden. Die anderen aber schon; Nur 5 Punkte statt eigentlich 10 abgezogen"
+Did you only upload the necessary files to SVN?;yes;1;1 ;Are your uploaded files all necessary? (no executables or object files etc. are uploaded)?;;;
+;;;;;;;
+All Exercises;Your Evaluation;Max;Result;How to evaluate by yourself;;;
+yes or no?;no;3;-5 ;Did your code compile also for Visual Studio 2019 on computer of B. Schmidt or H. Helmke?;;Eventuell muss vorher noch der Order TestAssets in das Build Verzeichnis geschoben werden (wird über Cmake gemacht),;rekursives Include in der DynVector-Datei
+yes or no?;yes;3;3;Did your code compile without warnings for Warning Level 4 on Visual Studio 2019? Ask  your colleagues.;;darin hab ich all die Textdateien platziert.;
+;;;;;;;
+Exercise 7-1;Your Evaluation;Max;Result;How to evaluate by yourself;;;
+yes or no?;yes;1;1;Did you upload the screen dump exercise7-testForIntNumbers.jpg into folder Images?;;;
+yes or no?;yes;1;1;Is the implementation of the code correct and as expected (evaluate yourself)?;;;
+yes or no?;yes;1;1;Did you upload the screen dump exercise7-testForDecimalNumbers.jpg into folder Images?;;;
+yes or no?;yes;1;1;Is the implementation of the code correct and as expected (evaluate yourself)?;;;
+;;;;;;;
+yes or no?;yes;1;1;Did you upload the screen dump exercise7-wordSeqOutput-1.jpg into folder Images?;;;
+yes or no?;yes;1;1;Did you upload  (update ) the screen dump exercise7-wordSeqOutput-1.jpg into folder Images, which is the same as exercise7-wordSeqOutput-1.jpg, but here you should mark all differences in red to the expected output of Helmke? You find the expected output of Helmke in the work sheet 'Images' of this excel file, when you have finalized your code.;;;Rename to  exercise7-wordSeqOutput-2-copy.jpg, otherwise we overwrite a file. Better is however, that we use the same name  exercise7-wordSeqOutput-1.jpg 
+yes or no?;yes;2;2;Did your image exercise7-wordSeqOutput-1.jpg contain 10 lines with utterances and 10 lines with numbers?;;;
+yes or no?;yes;2;2;Did your file exercise7-wordSeqOutput-1.jpg contain less than 5 different lines (with numbers) compared to the expected ones (you can have 10 different lines at maximum)? One difference in line counts as full line failed.;;;
+yes or no?;yes;1;1;Did your file exercise7-wordSeqOutput-1.jpg contain less than 3 different lines (with numbers) compared to the expected ones?;;;
+yes or no?;yes;1;1;Did your file exercise7-wordSeqOutput-1.jpg contain less than 2 different lines (with numbers) compared to the expected ones?;;;
+yes or no?;yes;2;2;Did your file exercise7-wordSeqOutput-1.jpg contain no different lines (with numbers) compared to the expected ones?;;;
+;;;;;;;
+yes or no?;yes;1;1;Did you upload the screen dump exercise7-wordSeqOutput-2.jpg into folder Images? No further action necessary, the examples are a subset of previous one.;;;
+;;;;;;;
+Exercise 7-2;Your Evaluation;Max;Result;How to evaluate by yourself;;;
+yes or no?;yes;1;1;Did you upload the screen dump exercise7-ReadUtterancesAndOutputNumbers.jpg into folder Images?;;;
+yes or no?;yes;3;3;Is the implementation of the code correct and will Prof. Helmke not complain too much (evaluate yourself)?;;;
+;;;;;;;
+yes or no?;yes;1;1;Did you upload the screen dump exercise7-ReadUtterOutputNumbers.jpg into folder Images? The input data you find also in this file in work sheet InputFiles (after you have uploaded your code). Attention, different versions for master and for bachelor.;;Die Cmd bei dem Screnshot ist recht schmall daher Umbrüche;
+yes or no?;yes;2;2;Did your image exercise7-ReadUtterOutputNumbers.jpg contain 10 lines with utterances and 10 lines with numbers?  One difference in line counts as full line failed.;;;
+yes or no?;yes;2;2;Did your file exercise7-ReadUtterOutputNumbers.jpg contain less than 5 different lines (with numbers) compared to the expected ones ?;;;
+yes or no?;yes;1;1;Did your file exercise7-ReadUtterOutputNumbers.jpg contain less than 3 different lines (with numbers) compared to the expected ones?;;;
+yes or no?;yes;1;1;Did your file exercise7-ReadUtterOutputNumbers.jpg contain less than 1 different lines (with numbers) compared to the expected ones?;;;
+yes or no?;yes;3;3;Did your file exercise7-ReadUtterOutputNumbers.jpg contain no difference  (with numbers) compared to the expected ones?;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;Max Points;;40;;;;
+;Result Sum;;23;;;;
+;Master;;;;;;
+;Percentage;;57.5%;;;;
+;;;;;;;
+;;;;"Speichern Sie diese Datei im Ordner Aufgabe07 unter dem Namen
+Bewertung.xlsx als Excel-Datei ab. Speichern  Sie die Datei
+außerdem als csv-Datei (comma seperates values) als Bewertung.csv im gleichen Ordner ab. Beim Speichern als csv-Datei muss dieses Arbeitsblatt geöffnet sein. Stellen Sie sicher, dass Sie zuvor auch die Excel-Datei selbst abgespeichert haben";;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;Achten Sie darauf, dass Sie sich beim Speichern im Arbeitsblatt Evaluation (also in diesem) befinden.;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;

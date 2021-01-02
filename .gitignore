@@ -4,6 +4,7 @@
 **/vscode/
 **/.svn/
 **/.idea/
+**/.cache/
 **/.build/
 **/cmake-build-debug/
 build/

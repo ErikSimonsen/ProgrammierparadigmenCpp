@@ -1,91 +1,176 @@
-#include <fstream>
-#include <sstream>
 #include "Processing.h"
-#include "Util.h"
-#include "AtcoCommand.h"
 #include "AtcoCmds.h"
-//General functions, which dont need to be separated in a class, because they are called only once anyways (in main)
-void FillAllowedCommands(AllowedCmdSet &allowedCmdSet, std::ifstream &infile)
-{
-    std::string line;
-    //read each line and then parse the line with a stringstream with the comma delimiter into words
-    while (getline(infile, line))
-    {
-        allowedCmdSet.insert(Trim(line));
-    }
+#include "AtcoCommand.h"
+#include "NumberExtractor.h"
+#include "Util.h"
+#include <cmath>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+
+// General functions, which dont need to be separated in a class, because they
+// are called only once anyways (in main)
+void FillAllowedCommands(AllowedCmdSet &allowedCmdSet, std::ifstream &infile) {
+  std::string line;
+  // read each line and then parse the line with a stringstream with the comma
+  // delimiter into words
+  while (getline(infile, line)) {
+    allowedCmdSet.insert(Trim(line));
+  }
 }
 
-void CountWordOccurences(AtcoCmds &atcoCmds, WordCntMap &wordCntMap)
-{
-    std::string word;
-    for (int i = 0; i < atcoCmds.GetCountedUtterances(); ++i)
-    {
-        std::stringstream strStream(atcoCmds.Get(i).GetWordSequence());
-        while (strStream >> word)
-        {
-            wordCntMap[word]++;
+void CountWordOccurences(AtcoCmds &atcoCmds, WordCntMap &wordCntMap) {
+  std::string word;
+  for (int i = 0; i < atcoCmds.GetCountedUtterances(); ++i) {
+    std::stringstream strStream(atcoCmds.Get(i).GetWordSequence());
+    while (strStream >> word) {
+      wordCntMap[word]++;
+    }
+  }
+}
+
+void OrderCountedWords(const WordCntMap &wordCntMap,
+                       WordCntOrderedSet &wordCntOrderedSet) {
+  for (const auto &iter : wordCntMap) {
+    std::pair<std::string, int> pair = std::make_pair(iter.first, iter.second);
+    wordCntOrderedSet.insert(pair);
+  }
+}
+
+void CountCmdOccurences(AtcoCmds &atcoCmds, CmdCntMap &cmdCntMap,
+                        const AllowedCmdSet &allowedCmdSet) {
+  for (int i = 0; i < atcoCmds.GetCountedUtterances(); ++i) {
+    AtcoCommand currentAtcoCommand = atcoCmds.Get(i);
+    for (int j = 0; j < currentAtcoCommand.GetCmdCnt(); j++) {
+      std::string command = currentAtcoCommand.GetCommand(j);
+
+      std::stringstream strStream(command); // parse string by whitespace
+      std::string callSign, type, extendedType;
+      strStream >> callSign >> type >> extendedType;
+      // check if extended type exists and then if the type concatenated with
+      // extended type is an allowed command
+      if (!extendedType.empty() && !isdigit(extendedType[0])) {
+        std::string fullType =
+            type + " " +
+            extendedType; // do not use type.append() here! because then the
+                          // string object for type also gets changed which
+                          // results in the .find(type) in the if further down
+                          // to return false
+        if (allowedCmdSet.find(fullType) != allowedCmdSet.end()) {
+          cmdCntMap[fullType]++;
         }
+      }
+      if (allowedCmdSet.find(type) != allowedCmdSet.end()) {
+        cmdCntMap[type]++;
+      }
     }
+  }
 }
 
-void OrderCountedWords(const WordCntMap &wordCntMap, WordCntOrderedSet &wordCntOrderedSet)
-{
-    for (const auto &iter : wordCntMap)
-    {
-        std::pair<std::string, int> pair = std::make_pair(iter.first, iter.second);
-        wordCntOrderedSet.insert(pair);
-    }
+void OrderCountedCmds(const CmdCntMap &cmdCntMap,
+                      CmdCntOrderedSet &cmdCntOrderedSet) {
+  for (const auto &iter : cmdCntMap) {
+    std::pair<std::string, int> pair = std::make_pair(iter.first, iter.second);
+    cmdCntOrderedSet.insert(pair);
+  }
 }
 
-void CountCmdOccurences(AtcoCmds &atcoCmds, CmdCntMap &cmdCntMap, const AllowedCmdSet &allowedCmdSet)
-{
-    for (int i = 0; i < atcoCmds.GetCountedUtterances(); ++i)
-    {
-        AtcoCommand currentAtcoCommand = atcoCmds.Get(i);
-        for (int j = 0; j < currentAtcoCommand.GetCmdCnt(); j++)
-        {
-            std::string command = currentAtcoCommand.GetCommand(j);
+bool ReadUtteranceCheckCallsign(std::string fileName, bool printOut,
+                                std::vector<std::string> expectedValues) {
+  AtcoCmds atcoCmds{};
+  std::ifstream inFile(fileName);
+  if (!inFile) {
+    std::cerr << "Die angegebene Word-Sequenz Datei: " + fileName +
+                     " konnte im Build-Verzeichnis nicht gefunden werden."
+              << "\n";
+    return false;
+  }
+  atcoCmds.ReadFromFile(inFile);
+  int expectedLength = static_cast<int>(expectedValues.size());
 
-            std::stringstream strStream(command); //parse string by whitespace
-            std::string callSign, type, extendedType;
-            strStream >> callSign >> type >> extendedType;
-            //check if extended type exists and then if the type concatenated with extended type is an allowed command
-            if (!extendedType.empty() && !isdigit(extendedType[0]))
-            {
-                std::string fullType = type + " " + extendedType; //do not use type.append() here! because then the string object for type also gets changed which results in the .find(type) in the if further down to return false
-                if (allowedCmdSet.find(fullType) != allowedCmdSet.end())
-                {
-                    cmdCntMap[fullType]++;
-                }
-            }
-            if (allowedCmdSet.find(type) != allowedCmdSet.end())
-            {
-                cmdCntMap[type]++;
-            }
+  for (int i = 0; i < expectedLength; ++i) {
+    AtcoCommand atcoCommand = atcoCmds.Get(i);
+    if (printOut) {
+      std::cout << atcoCommand.GetWordSequence() << "\n";
+      std::cout << "      determined:" + atcoCommand.GetCallSign()
+                << "  expected:" << expectedValues.at(i) << "\n";
+    }
+    if (atcoCommand.GetCallSign() != expectedValues.at(i)) {
+      return false;
+    }
+  }
+  return true;
+}
+bool ReadUtteranceExtractNumbers(std::string fileName,
+                                 std::vector<double> expectedValues,
+                                 bool printOut) {
+  AtcoCmds atcoCmds{};
+  std::ifstream inFile(fileName);
+  if (!inFile) {
+    std::cerr << "Die angegebene Word-Sequenz Datei: " + fileName +
+                     " konnte im Build-Verzeichnis nicht gefunden werden."
+              << "\n";
+    return false;
+  }
+  atcoCmds.ReadFromFile(inFile);
+  auto expectedIter = expectedValues.begin();
+  for (int i = 0; i < atcoCmds.GetCountedUtterances(); ++i) {
+    AtcoCommand atcoCommand = atcoCmds.Get(i);
+    NumberExtractor numEx{atcoCommand.GetWordSequence()};
+    numEx.PerformFullExtraction();
+    if (printOut) {
+      std::cout << atcoCommand.GetWordSequence() << "\n";
+      for (int j = 0; j < numEx.GetExtractedNumbersCnt(); ++j) {
+        if (expectedIter == expectedValues.end())
+          return false;
+        std::cout << "      extracted: ";
+        if (numEx.IsNumberDouble(j)) {
+          std::cout << "  " << numEx.GetNumberAsDouble(j);
+        } else {
+          std::cout << "  " << numEx.GetNumberAsInt(j);
         }
+        if (std::fmod(*expectedIter, 1) >
+            0) { // hat dezimalstellen, da *expectedIter % 1 > 0
+          std::cout << "    expected:   " + std::to_string(*expectedIter)
+                    << "\n";
+        } else { // keine dezimalstellen -> muss nicht als double dargestellt
+                 // werden
+          std::cout << "    expected:   " + std::to_string((int)*expectedIter)
+                    << "\n";
+        }
+        ++expectedIter;
+      }
+      // reset the iterator to the state before the above loop for printing out
+      expectedIter = expectedIter - numEx.GetExtractedNumbersCnt();
     }
-}
 
-void OrderCountedCmds(const CmdCntMap &cmdCntMap, CmdCntOrderedSet &cmdCntOrderedSet)
-{
-    for (const auto &iter : cmdCntMap)
-    {
-        std::pair<std::string, int> pair = std::make_pair(iter.first, iter.second);
-        cmdCntOrderedSet.insert(pair);
+    for (int j = 0; j < numEx.GetExtractedNumbersCnt(); ++j) {
+      if (expectedIter == expectedValues.end())
+        return false;
+      if (numEx.IsNumberDouble(j)) {
+        if (numEx.GetNumberAsDouble(j) != (*expectedIter)) {
+          return false;
+        }
+      } else {
+        if (numEx.GetNumberAsInt(j) != (*expectedIter)) {
+          return false;
+        }
+      }
+      ++expectedIter;
     }
+  }
+  return true;
+}
+bool IsLineWordSequence(std::string &line) {
+  return isblank(line[0]) && isblank(line[1]) && isblank(line[2]) &&
+         islower(line[3]);
 }
 
-bool IsLineWordSequence(std::string &line)
-{
-    return isblank(line[0]) && isblank(line[1]) && isblank(line[2]) && islower(line[3]);
+bool IsLineCommandSequence(std::string &line) {
+  return isblank(line[0]) && isblank(line[1]) && isblank(line[2]) &&
+         isupper(line[3]);
 }
 
-bool IsLineCommandSequence(std::string &line)
-{
-    return isblank(line[0]) && isblank(line[1]) && isblank(line[2]) && isupper(line[3]);
-}
-
-bool IsLineTimestamp(std::string &line)
-{
-    return isdigit(line[0]) && line[0] == '2';
+bool IsLineTimestamp(std::string &line) {
+  return isdigit(line[0]) && line[0] == '2';
 }

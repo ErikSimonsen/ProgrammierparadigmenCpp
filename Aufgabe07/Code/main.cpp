@@ -30,7 +30,10 @@ int main(int argc, char *argv[])
         }
         // } while (std::chrono::system_clock::now() < finish);
     }
-    ReadUtterancesAndOutputNumbers();
+    else
+    {
+       ReadUtterancesAndOutputNumbers();
+    }
     return 0;
 }
 bool ExecuteTests()

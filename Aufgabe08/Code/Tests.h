@@ -30,7 +30,11 @@ bool testOrderCmdOccurences1();
 bool testExtractNumbers();
 bool testExtractNumberThousand();
 bool testExtractDecimalNumbers();
-bool dumpExtractNumbers();
-bool dumpExtractNumbers2();
 
-#endif //TESTS_HEADER
+bool testAtcoCommandDetermineCallsign();
+bool testReadUtteranceCheckCallsign();
+bool testReadUtteranceCheckCallsign2();
+
+bool testReadUtteranceExtractNumbers();
+bool testReadUtteranceExtractNumbers2();
+#endif // TESTS_HEADER

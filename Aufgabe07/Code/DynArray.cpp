@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include "DynArray.h"
 
 //Kontruktor, Kopierkonstruktor, Destruktor und Zuweisungsoperator
 template <class T>
