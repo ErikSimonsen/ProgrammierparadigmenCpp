@@ -6,6 +6,7 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <setjmp.h>
 #include <sstream>
 
 // General functions, which dont need to be separated in a class, because they
@@ -79,6 +80,7 @@ bool ReadUtteranceCheckCallsign(std::string fileName, bool printOut,
                                 std::vector<std::string> expectedValues) {
   AtcoCmds atcoCmds{};
   std::ifstream inFile(fileName);
+  bool result = true;
   if (!inFile) {
     std::cerr << "Die angegebene Word-Sequenz Datei: " + fileName +
                      " konnte im Build-Verzeichnis nicht gefunden werden."
@@ -96,16 +98,17 @@ bool ReadUtteranceCheckCallsign(std::string fileName, bool printOut,
                 << "  expected:" << expectedValues.at(i) << "\n";
     }
     if (atcoCommand.GetCallSign() != expectedValues.at(i)) {
-      return false;
+      result = false;
     }
   }
-  return true;
+  return result;
 }
-bool ReadUtteranceExtractNumbers(std::string fileName,
-                                 std::vector<double> expectedValues,
-                                 bool printOut) {
+bool ReadUtteranceExtractNumbers(
+    std::string fileName, std::vector<std::vector<double>> expectedValues,
+    bool printOut) {
   AtcoCmds atcoCmds{};
   std::ifstream inFile(fileName);
+  bool result = true;
   if (!inFile) {
     std::cerr << "Die angegebene Word-Sequenz Datei: " + fileName +
                      " konnte im Build-Verzeichnis nicht gefunden werden."
@@ -116,50 +119,52 @@ bool ReadUtteranceExtractNumbers(std::string fileName,
   auto expectedIter = expectedValues.begin();
   for (int i = 0; i < atcoCmds.GetCountedUtterances(); ++i) {
     AtcoCommand atcoCommand = atcoCmds.Get(i);
+    std::string test = atcoCommand.GetWordSequence();
     NumberExtractor numEx{atcoCommand.GetWordSequence()};
     numEx.PerformFullExtraction();
     if (printOut) {
       std::cout << atcoCommand.GetWordSequence() << "\n";
-      for (int j = 0; j < numEx.GetExtractedNumbersCnt(); ++j) {
-        if (expectedIter == expectedValues.end())
-          return false;
+    }
+    std::vector<double> expectedUtteranceValues = expectedValues.at(i);
+
+    for (int j = 0; j < numEx.GetExtractedNumbersCnt(); ++j) {
+      int expectedValuesSize = static_cast<int>(expectedUtteranceValues.size());
+      if (expectedValuesSize <= j) { // there are more numbers extracted
+                                     // than expected -> false
+        result = false;
+        continue;
+      }
+      if (printOut)
         std::cout << "      extracted: ";
-        if (numEx.IsNumberDouble(j)) {
-          std::cout << "  " << numEx.GetNumberAsDouble(j);
-        } else {
-          std::cout << "  " << numEx.GetNumberAsInt(j);
+      if (numEx.IsNumberDouble(j)) {
+        if (numEx.GetNumberAsDouble(j) != expectedUtteranceValues.at(j)) {
+          result = false;
         }
-        if (std::fmod(*expectedIter, 1) >
+        if (printOut)
+          std::cout << "  " << numEx.GetNumberAsDouble(j);
+      } else {
+        if (numEx.GetNumberAsInt(j) != expectedUtteranceValues.at(j)) {
+          result = false;
+        }
+        if (printOut)
+          std::cout << "  " << numEx.GetNumberAsInt(j);
+      }
+      if (printOut) {
+        if (std::fmod(expectedUtteranceValues.at(j), 1) >
             0) { // hat dezimalstellen, da *expectedIter % 1 > 0
-          std::cout << "    expected:   " + std::to_string(*expectedIter)
+          std::cout << "    expected:   " +
+                           std::to_string(expectedUtteranceValues.at(j))
                     << "\n";
         } else { // keine dezimalstellen -> muss nicht als double dargestellt
                  // werden
-          std::cout << "    expected:   " + std::to_string((int)*expectedIter)
+          std::cout << "    expected:   " +
+                           std::to_string((int)expectedUtteranceValues.at(j))
                     << "\n";
         }
-        ++expectedIter;
       }
-      // reset the iterator to the state before the above loop for printing out
-      expectedIter = expectedIter - numEx.GetExtractedNumbersCnt();
-    }
-
-    for (int j = 0; j < numEx.GetExtractedNumbersCnt(); ++j) {
-      if (expectedIter == expectedValues.end())
-        return false;
-      if (numEx.IsNumberDouble(j)) {
-        if (numEx.GetNumberAsDouble(j) != (*expectedIter)) {
-          return false;
-        }
-      } else {
-        if (numEx.GetNumberAsInt(j) != (*expectedIter)) {
-          return false;
-        }
-      }
-      ++expectedIter;
     }
   }
-  return true;
+  return result;
 }
 bool IsLineWordSequence(std::string &line) {
   return isblank(line[0]) && isblank(line[1]) && isblank(line[2]) &&

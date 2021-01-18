@@ -24,6 +24,7 @@ add_executable(Aufgabe8
         Code/AtcoCmds.cpp
         Code/FileName.h
         Code/FileName.cpp
+        Code/TestCode.cpp
         Code/DynArray.h
         Code/Processing.cpp
         Code/Processing.h

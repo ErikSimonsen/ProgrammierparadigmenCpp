@@ -1,10 +1,10 @@
 ;Store this file as Bewertung.xlsx in folder Aufgabe08! After that create the file Bewertung.csv from the Bewertung.xlsx file and store it also in folder Aufgabe08!;;;;Kommentar;;
-Current Date;29.12.2021;;;Please only process the green fields, they mostly contain drop down menus.;;In the following, do not be too critical with yourself. If you have implemented a functionality and my requirements were not so clear, your results are still O.K. especially when you have created tests which test your interpretation!!!;
+Current Date;11.01.2021;;;Please only process the green fields, they mostly contain drop down menus.;;In the following, do not be too critical with yourself. If you have implemented a functionality and my requirements were not so clear, your results are still O.K. especially when you have created tests which test your interpretation!!!;
 Bachelor or Master;Master;;;;Bachelor oder Master eintragen;;
 Dual Student?;no;;;;Bachelor oder Master eintragen;;
 "Operating System 
-(e.g. Windows, Linux)";Linux;;;;Bachelor oder Master eintragen;;
-IDE (e.g. Visual Studio, CLion Ö);VS Code;;;;Bachelor oder Master eintragen;;
+(e.g. Windows, Linux)";;;;;Bachelor oder Master eintragen;;
+IDE (e.g. Visual Studio, CLion Ö);;;;;Bachelor oder Master eintragen;;
 Vorname;Erik;;;;;;
 Nachname;Simonsen;;;;;;
 User Id;id099703;;;;;;
@@ -24,10 +24,10 @@ yes or no?;yes;1;1;Did you upload the screen dumps ReadUtteranceCheckCallsignTes
 yes or no?;yes;1;1;Is the functionality of the tested function shown in ReadUtteranceCheckCallsignTest01.jpg etc. correct?;;;
 yes or no?;yes;1;1;Did you upload the screen dump file NumbersWithCallsignsEx1.jpg into folder Images?;;;
 yes or no?;yes;3;3;Does the output in jpg-file NumbersWithCallsignsEx1.jpg show the expected callsigns (one deviation is accepted)?;;;
-yes or no?;no;1;0;Did you upload the screen dump file callsignExtraction.jpg into folder Images, which results from running your function file CallsignExtractionBachelor.txt resp. CallsignExtractionMaster.txt? The contents of this file are shown in sheet InputFiles of this excel file, but not now.;;;
-yes or no?;no;3;0;Does the output in jpg-file callsignExtraction.jpg show the expected callsigns (two deviation at most)?;;;
-yes or no?;no;2;0;Does the output in jpg-file callsignExtraction.jpg show the expected callsigns (one deviation at most)?;;;
-yes or no?;no;1;0;Does the output in jpg-file callsignExtraction.jpg show the expected callsigns (no deviations)?;;;
+yes or no?;yes;1;1;Did you upload the screen dump file callsignExtraction.jpg into folder Images, which results from running your function file CallsignExtractionBachelor.txt resp. CallsignExtractionMaster.txt? The contents of this file are shown in sheet InputFiles of this excel file, but not now.;;;
+yes or no?;yes;3;3;Does the output in jpg-file callsignExtraction.jpg show the expected callsigns (two deviation at most)?;;;
+yes or no?;yes;2;2;Does the output in jpg-file callsignExtraction.jpg show the expected callsigns (one deviation at most)?;;;
+yes or no?;yes;1;1;Does the output in jpg-file callsignExtraction.jpg show the expected callsigns (no deviations)?;;;
 ;;;;;;;
 ;;;;;;;
 Exercise 8-2;Your Evaluation;Max;Result;How to evaluate by yourself;;;
@@ -40,16 +40,16 @@ yes or no?;yes;4;4;Does the output in jpg-file  CallsignExtrWithCorrection.jpg s
 yes or no?;yes;2;2;Did you upload the screen dump  NumberExtrWithCorrection.jpg  with expected contents into folder Images?;;;
 yes or no?;yes;4;4;Does the output in jpg-file  NumberExtrWithCorrection.jpg  show the expected numbers (one deviation is accepted)?;;;
 ;;;;;;;
-yes or no?;no;4;4;What are your results on unknown files for callsign extraction and number extraction? At least 50% of the utterance correct?;;;
-ranking???;;6;0;Best group for master students, bachelor students gets 6 additonal points, second 5,  third: 4 etc.;;;
+yes or no?;yes;4;4;What are your results on unknown files for callsign extraction and number extraction? At least 25% of the utterance correct?;;;
+ranking;;6;6;Best group for master students, bachelor students gets 6 additonal points, second 5,  third: 4 etc., Siehe hierzu die Zeilen 63ff in Spalte D;;;
 ;;;;;;;
 ;;;;;;;
 ;;;;;;;
 ;;;;;;;
 ;Max Points;;51;;;;
-;Result Sum;;38;;;;
+;Result Sum;;51;;;;
 ;Master;;;;;;
-;Percentage;;74,5%;;;;
+;Percentage;;100,0%;;;;
 ;;;;;;;
 ;;;;"Speichern Sie diese Datei im Ordner Aufgabe08 unter dem Namen
 Bewertung.xlsx als Excel-Datei ab. Speichern  Sie die Datei
@@ -61,3 +61,14 @@ auﬂerdem als csv-Datei (comma seperates values) als Bewertung.csv im gleichen Or
 ;;;;;;;
 ;;;;;;;
 ;;;;;;;
+;;;;;;;
+;;;;;;;
+Anzahl der Callsign-Fehler bei der Datei CallsignExtractionBachelor.txt;;;2;;;Bitte in Spalte D jeweils eintragen;
+Anzahl der Zahlen-Fehler bei der Datei CallsignExtractionBachelor.txt;;;1;;;Bitte in Spalte D jeweils eintragen;
+Anzahl der Callsign-Fehler bei der Datei CallsignExtractionMaster.txt;;;2;;;Bitte in Spalte D jeweils eintragen;
+Anzahl der Zahlen-Fehler bei der Datei CallsignExtractionMaster.txt;;;2;;;Bitte in Spalte D jeweils eintragen;
+Anzahl der Callsign-Fehler bei der Datei BigChallenges.txt;;;9;;;Bitte in Spalte D jeweils eintragen;
+Anzahl der Zahlen-Fehler bei der Datei BigChallenges.txt;;;3;;;Bitte in Spalte D jeweils eintragen;
+Callsign-Fehler;;;13;;;;
+Zahlen-Fehler;;;6;;;;
+Gesamt Fehler-Zahl;;;19;;;;

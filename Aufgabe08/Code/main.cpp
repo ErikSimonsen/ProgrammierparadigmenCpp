@@ -1,6 +1,7 @@
 #include "AtcoCmds.h"
 #include "NumberExtractor.h"
 #include "Processing.h"
+#include "TestCode.h"
 #include "Tests.h"
 #include "dosFarben.h"
 #include "testMakros.h"
@@ -20,6 +21,8 @@ int main(int argc, char *argv[]) {
                              expectedCallsigns);
   ReadUtteranceExtractNumbers("testAssets/NumberCorrection.txt",
                               expectedNumbers, true);**/
+  SpecialCallsignCheckFilesHHe();
+  SpecialNumberCheckFilesHHe();
   ExecuteTests();
   if (argc > 1 && std::string(argv[1]) == "--test") {
     //  auto finish = std::chrono::system_clock::now() +

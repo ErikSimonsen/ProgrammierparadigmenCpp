@@ -571,8 +571,9 @@ bool testReadUtteranceCheckCallsign2() {
 }
 
 bool testReadUtteranceExtractNumbers() {
-  std::vector<double> expectedValues = {
-      4000, 1022, 3500, 7000, 8000, 10000, 1003, 123.8, 23, 21, 13, 12, 119825};
+  std::vector<std::vector<double>> expectedValues = {
+      {4000, 1022}, {3500, 7000},     {8000},  {10000, 1003},
+      {123.8},      {23, 21, 13, 12}, {119825}};
   std::string filePath = TestFilesPath + "ExtractedNumbersCallsignEx1.txt";
 
   if (!ReadUtteranceExtractNumbers(filePath, expectedValues, false)) {
@@ -581,9 +582,9 @@ bool testReadUtteranceExtractNumbers() {
   return true;
 }
 bool testReadUtteranceExtractNumbers2() {
-  std::vector<double> expectedValues = {4000, 1022, 58,    3500, 7000,
-                                        8000, 201,  10000, 1003, 123.8,
-                                        23,   21,   13,    12,   119.825};
+  std::vector<std::vector<double>> expectedValues = {
+      {4000, 1022},  {58},    {3500, 7000},     {8000},   {201},
+      {10000, 1003}, {123.8}, {23, 21, 13, 12}, {119.825}};
   std::string filePath = TestFilesPath + "ExtractedNumbersCallsignEx1.txt";
   if (ReadUtteranceExtractNumbers(filePath, expectedValues, false)) {
     return false;

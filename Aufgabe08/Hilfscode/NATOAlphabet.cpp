@@ -115,8 +115,8 @@ const std::unordered_map<std::string, int>
 
 const std::unordered_map<std::string, char> NATOAlphabet::natoToLetters = {
     {"alfa", 'A'},    {"bravo", 'B'},    {"charlie", 'C'},
-    {"delta", 'D'},                     // delta is also an airline name
-    {"echo", 'E'},    {"foxtrot", 'F'}, // also fox
+    {"delta", 'D'}, // delta is also an airline name
+    {"echo", 'E'},    {"fox", 'F'},      {"foxtrot", 'F'}, // also fox
     {"golf", 'G'},    {"hotel", 'H'},    {"india", 'I'},
     {"juliett", 'J'}, {"kilo", 'K'},     {"lima", 'L'},
     {"mike", 'M'},    {"november", 'N'}, {"oscar", 'O'},

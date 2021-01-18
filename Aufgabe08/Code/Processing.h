@@ -48,8 +48,8 @@ bool ReadUtteranceCheckCallsign(std::string fileName, bool printOut,
 // use double vector. because excepted values could also contain double values,
 // and ints can be cast to doubles without a possible loss of information (not
 // the other way around tho)
-bool ReadUtteranceExtractNumbers(std::string fileName,
-                                 std::vector<double> expectedValues,
-                                 bool printOut);
+bool ReadUtteranceExtractNumbers(
+    std::string fileName, std::vector<std::vector<double>> expectedValues,
+    bool printOut);
 
 #endif // AUFGABE8_PROCESSING_H
